@@ -16,7 +16,7 @@ const ProductList = ({navigation}) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchProductList = async (setProducts, setLoading) => {
+  const fetchProductList = async () => {
     try {
       const response = await axios.get('https://dummyjson.com/products');
       setProducts(response.data.products);
@@ -29,11 +29,12 @@ const ProductList = ({navigation}) => {
 
   useEffect(() => {
     setLoading(true);
-    fetchProductList(setProducts, setLoading);
+    fetchProductList();
   }, []);
 
   const renderProduct = ({item}) => (
     <TouchableOpacity
+      activeOpacity={0.8}
       style={styles.productCard}
       onPress={() =>
         navigation.navigate('ProductDetails', {productId: item.id})
@@ -43,7 +44,7 @@ const ProductList = ({navigation}) => {
         <Text style={styles.productTitle}>{item.title}</Text>
         <Text style={styles.productPrice}>${item.price}</Text>
         <Text style={styles.productDiscount}>
-          {item.discountPercentage}%Off
+          {item.discountPercentage}% Off
         </Text>
         <Text style={styles.productRating}>Rating: {item.rating} ★</Text>
       </View>

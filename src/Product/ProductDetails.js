@@ -18,13 +18,12 @@ const ProductDetails = ({route}) => {
   const [product, setProduct] = useState('');
   const [loading, setLoading] = useState(true);
 
-  const fetchProductDetails = async (productId, setProduct, setLoading) => {
+  const fetchProductDetails = async () => {
     try {
-      const response = await fetch(
+      const response = await axios.get(
         `https://dummyjson.com/products/${productId}`,
       );
-      const data = await response.json();
-      setProduct(data);
+      setProduct(response.data);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching product details:', error);
@@ -33,8 +32,7 @@ const ProductDetails = ({route}) => {
   };
 
   useEffect(() => {
-    setLoading(true);
-    fetchProductDetails(productId, setProduct, setLoading);
+    fetchProductDetails();
   }, [productId]);
 
   const orderDataTable =
@@ -53,7 +51,7 @@ const ProductDetails = ({route}) => {
           <Text style={styles.title}>{product.title}</Text>
           <Text style={styles.price}>${product.price}</Text>
           <Text style={styles.productDiscount}>
-            {product.discountPercentage}%Off
+            {product.discountPercentage}% Off
           </Text>
           <Text style={styles.productRating}>Rating: {product.rating} ★</Text>
           <Text style={styles.description}>{product.description}</Text>
