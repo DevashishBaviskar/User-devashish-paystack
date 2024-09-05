@@ -63,7 +63,7 @@ const ProductList = ({navigation}) => {
           </View>
         </View>
       ) : (
-        <View vertical={true}>
+        <View>
           <FlatList
             data={products}
             renderItem={renderProduct}
