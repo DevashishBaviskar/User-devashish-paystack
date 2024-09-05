@@ -153,6 +153,18 @@ const styles = StyleSheet.create({
     color: '#888',
     marginBottom: 10,
   },
+  table_record: {
+    textAlign: 'center',
+    borderColor: 'gray',
+    fontSize: 14,
+    fontFamily: 'Poppins-SemiBold',
+    padding: 5,
+    backgroundColor: '#ffffff',
+    height: 40,
+    color: '#000000',
+    justifyContent: 'center',
+    marginTop: 50,
+  },
 });
 
 export default ProductDetails;
