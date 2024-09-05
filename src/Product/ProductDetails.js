@@ -15,44 +15,51 @@ import {useNavigation} from '@react-navigation/native';
 const ProductDetails = ({route}) => {
   const navigation = useNavigation();
   const {productId} = route.params;
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState('');
   const [loading, setLoading] = useState(true);
 
+  const fetchProductDetails = async (productId, setProduct, setLoading) => {
+    try {
+      const response = await fetch(
+        `https://dummyjson.com/products/${productId}`,
+      );
+      const data = await response.json();
+      setProduct(data);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching product details:', error);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get(`https://dummyjson.com/products/${productId}`)
-      .then(response => {
-        setProduct(response.data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error(error);
-        setLoading(false);
-      });
+    setLoading(true);
+    fetchProductDetails(productId, setProduct, setLoading);
   }, [productId]);
 
   const orderDataTable =
-    product === 0 ? (
-      <Text style={styles.table_record}>{LanguageStrings.noRecordsFound}.</Text>
+    product.length === 0 ? (
+      <Text style={styles.table_record}>noRecordsFound.</Text>
     ) : (
-      product && (
-        <View
-          style={{
-            alignContent: 'center',
-            margin: 20,
-            marginTop: 20,
-            flex: 1,
-          }}>
-          <>
-            <Image source={{uri: product.thumbnail}} style={styles.image} />
-            <Text style={styles.title}>{product.title}</Text>
-            <Text style={styles.price}>${product.price}</Text>
-            <Text style={styles.description}>{product.description}</Text>
-          </>
-        </View>
-      )
+      <View
+        style={{
+          alignContent: 'center',
+          margin: 20,
+          marginTop: 20,
+          flex: 1,
+        }}>
+        <>
+          <Image source={{uri: product.thumbnail}} style={styles.image} />
+          <Text style={styles.title}>{product.title}</Text>
+          <Text style={styles.price}>${product.price}</Text>
+          <Text style={styles.productDiscount}>
+            {product.discountPercentage}%Off
+          </Text>
+          <Text style={styles.productRating}>Rating: {product.rating} ★</Text>
+          <Text style={styles.description}>{product.description}</Text>
+        </>
+      </View>
     );
-  // const customerNameList = orderdata.data.map(cust => )
   return (
     <SafeAreaView style={styles.main_container2}>
       <View style={styles.heading_container}>
@@ -93,9 +100,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   title: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: 'bold',
     marginVertical: 10,
+    color: 'black',
   },
   price: {
     fontSize: 22,
@@ -112,13 +120,12 @@ const styles = StyleSheet.create({
     color: '#000000',
   },
   heading_container: {
-    backgroundColor: '#1D1C68', //'#ff003f',
+    backgroundColor: '#1D1C68',
     flexDirection: 'row',
     padding: 15,
   },
   header_text: {
     fontSize: 15,
-    // fontFamily: 'Poppins-SemiBold',
     color: '#ffffff',
     marginLeft: 15,
     marginTop: 2,
@@ -137,6 +144,16 @@ const styles = StyleSheet.create({
     height: 21,
     resizeMode: 'contain',
     marginTop: 2,
+  },
+  productDiscount: {
+    fontSize: 16,
+    color: '#ff4500',
+    marginBottom: 10,
+  },
+  productRating: {
+    fontSize: 16,
+    color: '#888',
+    marginBottom: 10,
   },
 });
 

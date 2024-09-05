@@ -16,17 +16,20 @@ const ProductList = ({navigation}) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchProductList = async (setProducts, setLoading) => {
+    try {
+      const response = await axios.get('https://dummyjson.com/products');
+      setProducts(response.data.products);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching product list:', error);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    axios
-      .get('https://dummyjson.com/products')
-      .then(response => {
-        setProducts(response.data.products);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error(error);
-        setLoading(false);
-      });
+    setLoading(true);
+    fetchProductList(setProducts, setLoading);
   }, []);
 
   const renderProduct = ({item}) => (
@@ -39,6 +42,10 @@ const ProductList = ({navigation}) => {
       <View style={styles.productInfo}>
         <Text style={styles.productTitle}>{item.title}</Text>
         <Text style={styles.productPrice}>${item.price}</Text>
+        <Text style={styles.productDiscount}>
+          {item.discountPercentage}%Off
+        </Text>
+        <Text style={styles.productRating}>Rating: {item.rating} ★</Text>
       </View>
     </TouchableOpacity>
   );
@@ -55,13 +62,13 @@ const ProductList = ({navigation}) => {
           </View>
         </View>
       ) : (
-        <ScrollView vertical={true}>
+        <View vertical={true}>
           <FlatList
             data={products}
             renderItem={renderProduct}
             keyExtractor={item => item.id.toString()}
           />
-        </ScrollView>
+        </View>
       )}
     </SafeAreaView>
   );
@@ -72,12 +79,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   productCard: {
-    flexDirection: 'row', // Align items horizontally (image left, text right)
+    flexDirection: 'row',
     backgroundColor: '#fff',
     padding: 10,
     marginVertical: 5,
     borderRadius: 10,
-    elevation: 3, // Add shadow for Android
+    elevation: 3,
   },
   productImage: {
     width: 80,
@@ -86,7 +93,7 @@ const styles = StyleSheet.create({
   },
   productInfo: {
     marginLeft: 15,
-    justifyContent: 'center', // Center text vertically
+    justifyContent: 'center',
   },
   productTitle: {
     fontSize: 16,
@@ -129,6 +136,16 @@ const styles = StyleSheet.create({
     height: 21,
     resizeMode: 'contain',
     marginTop: 2,
+  },
+  productDiscount: {
+    fontSize: 12,
+    color: '#ff4500',
+    marginTop: 5,
+  },
+  productRating: {
+    fontSize: 12,
+    color: '#888',
+    marginTop: 5,
   },
 });
 
