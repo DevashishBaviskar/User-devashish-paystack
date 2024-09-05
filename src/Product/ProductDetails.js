@@ -35,29 +35,26 @@ const ProductDetails = ({route}) => {
     fetchProductDetails();
   }, [productId]);
 
-  const orderDataTable =
-    product.length === 0 ? (
-      <Text style={styles.table_record}>noRecordsFound.</Text>
-    ) : (
-      <View
-        style={{
-          alignContent: 'center',
-          margin: 20,
-          marginTop: 20,
-          flex: 1,
-        }}>
-        <>
-          <Image source={{uri: product.thumbnail}} style={styles.image} />
-          <Text style={styles.title}>{product.title}</Text>
-          <Text style={styles.price}>${product.price}</Text>
-          <Text style={styles.productDiscount}>
-            {product.discountPercentage}% Off
-          </Text>
-          <Text style={styles.productRating}>Rating: {product.rating} ★</Text>
-          <Text style={styles.description}>{product.description}</Text>
-        </>
-      </View>
-    );
+  const orderDataTable = (
+    <View
+      style={{
+        alignContent: 'center',
+        margin: 20,
+        marginTop: 20,
+        flex: 1,
+      }}>
+      <>
+        <Image source={{uri: product.thumbnail}} style={styles.image} />
+        <Text style={styles.title}>{product.title}</Text>
+        <Text style={styles.price}>${product.price}</Text>
+        <Text style={styles.productDiscount}>
+          {product.discountPercentage}% Off
+        </Text>
+        <Text style={styles.productRating}>Rating: {product.rating} ★</Text>
+        <Text style={styles.description}>{product.description}</Text>
+      </>
+    </View>
+  );
   return (
     <SafeAreaView style={styles.main_container2}>
       <View style={styles.heading_container}>
