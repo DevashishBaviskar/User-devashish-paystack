@@ -31,13 +31,15 @@ const ProductList = ({navigation}) => {
 
   const renderProduct = ({item}) => (
     <TouchableOpacity
-      style={styles.card}
+      style={styles.productCard}
       onPress={() =>
         navigation.navigate('ProductDetails', {productId: item.id})
       }>
-      <Image source={{uri: item.thumbnail}} style={styles.image} />
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.price}>${item.price}</Text>
+      <Image source={{uri: item.thumbnail}} style={styles.productImage} />
+      <View style={styles.productInfo}>
+        <Text style={styles.productTitle}>{item.title}</Text>
+        <Text style={styles.productPrice}>${item.price}</Text>
+      </View>
     </TouchableOpacity>
   );
 
@@ -66,35 +68,34 @@ const ProductList = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  productList: {
     padding: 10,
   },
-  card: {
+  productCard: {
+    flexDirection: 'row', // Align items horizontally (image left, text right)
     backgroundColor: '#fff',
-    borderRadius: 10,
     padding: 10,
-    marginBottom: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    shadowOffset: {width: 0, height: 5},
-    elevation: 5,
-  },
-  image: {
-    width: '60%',
-    height: 100,
+    marginVertical: 5,
     borderRadius: 10,
-    alignSelf: 'center',
+    elevation: 3, // Add shadow for Android
   },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 10,
+  productImage: {
+    width: 80,
+    height: 80,
+    borderRadius: 10,
   },
-  price: {
+  productInfo: {
+    marginLeft: 15,
+    justifyContent: 'center', // Center text vertically
+  },
+  productTitle: {
     fontSize: 16,
-    color: 'green',
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  productPrice: {
+    fontSize: 14,
+    color: '#888',
     marginTop: 5,
   },
   main_container2: {

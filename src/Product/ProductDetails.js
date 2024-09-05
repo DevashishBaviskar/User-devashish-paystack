@@ -60,13 +60,14 @@ const ProductDetails = ({route}) => {
           onPress={() => {
             navigation.goBack();
           }}>
-          <Image
-            source={require('../../assets/images/Left4.png')}
-            style={styles.back_icon}
-          />
+          <View style={{flexDirection: 'row'}}>
+            <Image
+              source={require('../../assets/images/Left4.png')}
+              style={styles.back_icon}
+            />
+            <Text style={styles.header_text}>Product Details</Text>
+          </View>
         </TouchableOpacity>
-
-        <Text style={styles.header_text}>Product Details</Text>
       </View>
       {loading ? (
         <View style={{flex: 1}}>
